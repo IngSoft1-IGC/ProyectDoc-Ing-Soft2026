@@ -1,0 +1,1 @@
+The user may create a [[League]], [[Team]]
