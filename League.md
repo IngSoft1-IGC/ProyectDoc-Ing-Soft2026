@@ -15,7 +15,7 @@ Each league has its own local leaderboard, tracking statistics for each particip
 5. Total Goals
 
 Within a league, all teams must play matches against each other.
-A list of open leagues must be shown.
+A list of open and private leagues leagues must be shown. 
 Users may be able to play friendly matches against each other at any given time.
 
 To join a league, each team must have a minimum of 6 [[Player]]s 
