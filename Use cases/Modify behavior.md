@@ -9,4 +9,4 @@
 The user modifies a behavior that was created previously to correct or overhaul how the player works in game.
 ### Preconditions
 1. The user is logged in
-2. 
+2. The user is in the "Behaviors" screen
