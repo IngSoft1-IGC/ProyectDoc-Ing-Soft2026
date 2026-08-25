@@ -3,7 +3,6 @@
 ````plantuml
 :Guest: - (Sign up)
 `````
-
 ### Actor
 * Guest
 ### Brief Description
