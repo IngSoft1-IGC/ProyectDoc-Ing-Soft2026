@@ -6,18 +6,15 @@
 ### Actor
 * User
 ## Brief Description
-
 The user creates a new team using their created players to prepare for matches.
 ## Preconditions
-
-The user is logged in.
-The user has at least 6 available players created in their account.
+1. The user is logged in.
+2. The user has at least 6 available players created in their account.
 ### Inputs
 1. Team name
 2. 3 Main players (Center, upper defendant, lower defendant).
 3. 3 Replacement players.
 ## Successful Scenarios
-
 1. The user clicks the "Create new team" button.
 2. The system displays a Team Creation form, showing an input field for the Team name, 3 drop-down menus for the main players, and 3 drop-down menus for the Replacement players.
 3. The user fills out the form and clicks the "submit" button.
