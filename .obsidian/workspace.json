@@ -8,41 +8,31 @@
         "type": "tabs",
         "children": [
           {
-            "id": "b0954f60966c801c",
+            "id": "30c1b3ac498e1ae0",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "League.md",
+                "file": "Use cases/Creating a new team.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "League"
+              "title": "Creating a new team"
             }
           },
           {
-            "id": "9e20457e51fb639b",
-            "type": "leaf",
-            "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
-            }
-          },
-          {
-            "id": "0f275128e4669550",
+            "id": "684ff2b5371755c5",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Use case 1.md",
+                "file": "Use cases/Modify behavior.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Use case 1"
+              "title": "Modify behavior"
             }
           }
         ],
@@ -96,7 +86,10 @@
             "type": "leaf",
             "state": {
               "type": "bookmarks",
-              "state": {},
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
               "icon": "lucide-bookmark",
               "title": "Bookmarks"
             }
@@ -190,16 +183,6 @@
             }
           },
           {
-            "id": "50b1181f0d07161d",
-            "type": "leaf",
-            "state": {
-              "type": "side-panel-control-view",
-              "state": {},
-              "icon": "viewIcon",
-              "title": "Markdown-Autocomplete"
-            }
-          },
-          {
             "id": "492f028335c2f9f7",
             "type": "leaf",
             "state": {
@@ -208,9 +191,19 @@
               "icon": "git-pull-request",
               "title": "Source Control"
             }
+          },
+          {
+            "id": "830fc357d1a7fdc2",
+            "type": "leaf",
+            "state": {
+              "type": "side-panel-control-view",
+              "state": {},
+              "icon": "viewIcon",
+              "title": "Markdown-Autocomplete"
+            }
           }
         ],
-        "currentTab": 6
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
@@ -230,22 +223,28 @@
       "obsidian-markdown-formatting-assistant-plugin:Open Markdown Formatting Assistant": false
     }
   },
-  "active": "50b1181f0d07161d",
+  "active": "684ff2b5371755c5",
   "lastOpenFiles": [
-    "Use case 1.md",
+    "Use cases/Creating a new team.md",
+    "Use cases/Modify behavior.md",
+    "Use cases/Creating a new user (Sign Up).md",
+    "Use cases/Creating a new league.md",
+    "Use cases/Diagrams",
+    "League.md",
+    "DFD.md",
     "Team.md",
+    "Untitled 1.md",
+    "Use cases",
+    "Functional Requirements Specification.md",
     "System Environment.md",
+    "Pasted image 20260820142530.png",
     "SRS Overwiew.md",
     "Player.md",
     "PACSS.md",
-    "Functional Requirements Specification.md",
-    "League.md",
     "Glossary.md",
     "Behaviours.md",
     "User.md",
     "Players.md",
-    "Untitled.md",
-    "Pasted image 20260820142530.png",
     "Welcome.md"
   ]
 }
