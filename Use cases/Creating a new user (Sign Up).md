@@ -29,6 +29,6 @@ The user accesses the website for the first time and wants to create a New User 
 #### Exception 2: Missing input fields
 * Trigger: Step 4 of Main Flow (input validation fails)
 * Flow: System displays an error message indicating the missing input fields, and prompts the user to fill out all the fields.
-### Post-conditions:
+### Post-conditions
 1. A new account is active in the system database.
 2. The user is ready to log in into the application.
