@@ -4,7 +4,7 @@
 
 | Atributo | Detalle |
 |:---|:---|
-|**Actor Primario**|Usuario|
+|**Actor Primario**|Usuario |
 |**Actor Secundario**|Sistema|
 |**Precondicion**|El Usuario debe estar autenticado y debe existir al menos un equipo registrado en el sistema.|
 
@@ -78,4 +78,80 @@ graph TD
     U -->|ID_Comp| E
     E ---|Baja de Registro| D
     E -->|Msj de Éxito/Error| U
+```
+
+### Caso de uso #13: Cerrar sesion
+**Descripcion:** Permite al usuario poder finalizar su sesion en el sistema.
+| Atributo | Detalle |
+|:---|:---|
+|**Actor Primario**|Usuario|
+|**Actor Secundario**|Sistema|
+|**Precondicion**|El usuario debe estar logeado y estar en la ventana principal.|
+#### Escenario Exitoso
+1. El usuario hace click en el boton 'cerrar sesion'.
+2. El sistema invalida la sesion actual.
+3. El sistema limpia los datos locales y redirige directamente a la pantalla de inicio de sesion.
+
+#### Escenario Excepcional
+* **2a. La sesión ya había expirado (por inactividad):**
+    1. El Sistema detecta que la sesión actual ya no es válida en el servidor.
+    2. El Sistema limpia los datos locales y redirige directamente a la pantalla de inicio de sesión.
+
+* **2b. Error de conexión con el servidor:**
+    1. El Sistema no puede comunicarse con el servidor para invalidar la sesión remotamente.
+    2. El Sistema fuerza el cierre de sesión de forma local por seguridad (borrando datos en el navegador/dispositivo).
+    3. El Sistema redirige a la pantalla de inicio de sesión.
+
+#### DFD
+```mermaid
+graph TD
+    U[Usuario]
+    P((13.0 Cerrar Sesión))
+    D[(DB: Control de Sesiones)]
+    U -->|Solicitud de Cierre / Token| P
+    P -->|Invalidar Registro de Sesión| D
+    P -->|Pantalla de Login| U
+```
+### Caso de uso #11: Eliminar liga
+
+**Descripción:** Permite al usuario la oportunidad de cancelar una liga no empezada.
+
+| Atributo | Detalle |
+| :--- | :--- |
+| **Actor Primario** | Usuario (Propietario de la liga) |
+| **Actor Secundario** | Sistema |
+| **Precondición** | El Usuario debe estar autenticado (logueado), debe ser el propietario de la liga a borrar y la liga no debe haber empezado. |
+| **Poscondición** | La liga es eliminada del sistema y los equipos inscritos son notificados de la cancelación. |
+
+#### Escenario Exitoso
+1. El Usuario elige la liga a borrar.
+2. El Usuario hace clic en 'Eliminar liga'.
+3. El Sistema solicita una confirmación al Usuario para proceder.
+4. El Usuario confirma la eliminación.
+5. El Sistema elimina la liga de la base de datos.
+6. El Sistema manda una notificación a los equipos que se habían inscrito.
+7. El Sistema muestra un mensaje de éxito y redirige a la pantalla principal.
+
+#### Escenarios Excepcionales / Alternativos
+
+* **4a. El Usuario cancela la eliminación de la liga:**
+    1. El Sistema cancela la operación sin hacer cambios en la base de datos.
+    2. El Sistema redirecciona a la pantalla anterior (o mantiene la vista actual).
+
+* **5a. El Sistema no puede eliminar la liga (Fallo técnico):**
+    1. El Sistema detecta un fallo al intentar procesar la baja en la base de datos.
+    2. El Sistema muestra un mensaje de error indicando que no se pudo eliminar la liga en este momento.
+    3. La liga permanece registrada en el sistema y no se envían notificaciones a los equipos.
+
+#### DFD
+```mermaid
+graph TD
+    U[Usuario / Propietario]
+    E[Equipos Inscritos]
+    P((11.0 Eliminar Liga))
+    D[(DB: Ligas)]
+    U -->|Solicitud / ID_Liga + Confirmación| P
+    P -->|Mensaje de Éxito / Error| U
+    P -->|Baja de Liga| D
+    P -->|Notificación de Cancelación| E
 ```
