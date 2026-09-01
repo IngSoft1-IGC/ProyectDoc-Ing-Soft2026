@@ -8,7 +8,7 @@ classDiagram
 
         +String email
 
-        +String password
+        +String password_ruido
 
         +String avatar
 
@@ -18,23 +18,28 @@ classDiagram
 
         +gestionarPerfil()
 
-        +borrarPerfil()
-
+        +borrarPerfil() ???
     }
 
 
 
-    class Club {
+    class Equipo {
 
         +int id
 
         +String nombre
 
-        +crearJugador()
+        +List JugadoresTitulares
+
+        +List JugadoresSuplentes
+
+        +crearEquipo()
 
         +unirseALiga()
 
-        +eliminarClub()
+        +editarEquipo()
+
+        +eliminarEquipo()
 
     }
 
@@ -43,6 +48,8 @@ classDiagram
     class Jugador {
 
         +int id
+
+        +int dorsal
 
         +String nombre
 
@@ -56,8 +63,6 @@ classDiagram
 
         +int strength
 
-        +bool esTitular
-
         +validarPACSS()
 
         +eliminarJugador()
@@ -70,15 +75,17 @@ classDiagram
 
         +int id
 
+        +string etiqueta
+
         +String codigoPython
 
         +crearcomportamiento()
 
-        +validarSintaxis() 
+        +validarSintaxis() ????
 
         +validarSeguridad()
 
-        +eliminarcomportamiento()
+        +eliminarComportamiento()
 
     }
 
@@ -102,7 +109,7 @@ classDiagram
 
         +iniciarLiga()
 
-        +inscribirClub()
+        +eliminarLiga() ????
 
     }
 
@@ -117,8 +124,10 @@ classDiagram
         +int golesContra
 
         +int diferenciaGoles
-
+        
         +actualizar()
+
+        +resetear()
 
     }
 
@@ -136,9 +145,11 @@ classDiagram
 
         +int id
 
-        +String estado
+        +bool estado 
 
-        +int tiempoActual
+        +string EquipoVisitante     ???
+
+        +string EquipoLocal     ???
 
         +iniciarPartido()
 
@@ -152,33 +163,26 @@ classDiagram
 
     class PartidoLiga {
 
-        +int idLiga
+        +int 
 
     }
 
 
-
-    class Pelota {
-
-        +float posX
-
-        +float posY
-
-        +invertirMovimiento()
-
+    class PartidoAmistoso {
+        +int 
     }
 
 
 
-    Usuario "1" -- "1" Club : posee
+    Usuario "1" -- "1" Equipo : posee
 
     Usuario "1" --> "*" Comportamiento : crea
 
-    Club "1" *-- "6" Jugador : conforma
+    Equipo "1" *-- "6" Jugador : conforma
 
     Jugador "*" --> "1" Comportamiento : ejecuta
 
-    Liga "1" *-- "*" Club : inscribe
+    Liga "1" *-- "*" Equipo : inscribe
 
     Liga "1" *-- "1" TablaPosiciones : gestiona
 
@@ -188,7 +192,7 @@ classDiagram
 
     Liga "1" *-- "*" PartidoLiga : programa
 
-    Partido "*" --> "2" Club : disputan
+    Partido "*" --> "2" Equipo : disputan
 
     Partido "1" *-- "1" Pelota : contiene
 
