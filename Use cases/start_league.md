@@ -20,7 +20,8 @@ Permite al creador de una liga confirmar y dar inicio formal a los partidos una 
 3. El Sistema valida que la liga cumpla con el número mínimo de equipos inscritos y que cada equipo tenga asignados sus jugadores.
 4. El Sistema cambia el estado de la liga a "En Curso".
 5. El Sistema genera el fixture de la liga.
-6. El Sistema muestra un mensaje de confirmación notificando el inicio exitoso de la liga y redirige al panel de visualización de partidos.
+6. El Sistema muestra un mensaje de confirmación notificando el inicio exitoso de la liga.
+7. El Sistema redirige al panel de visualización de partidos.
 
 #### Escenarios Excepcionales
 
