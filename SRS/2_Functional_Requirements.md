@@ -451,3 +451,125 @@ A user removes an existing behavior from the system.
 - All forms must provide clear error messages indicating what fields are invalid
 - All confirmation prompts must be explicit and require intentional user action
 - System should provide feedback for all operations (creation, update, deletion)
+
+
+# External Interface Requirements
+### Module-to-Endpoint Mapping
+#### 1.0  User & Profile Management Subsystem (`v1/auth`, `v1/users`)
+- `POST /v1/auth/signup` $\rightarrow$ Maps to **UC 1.1 Sign Up**
+- `POST /v1/auth/login` $\rightarrow$ Maps to **UC 1.2 User Login**    
+- `GET /v1/users/me` $\rightarrow$ Maps to **UC 1.3 Manage User Profile** (Fetch profile)
+- `PUT /v1/users/me` $\rightarrow$ Maps to **UC 1.3 Manage User Profile** (Update profile)
+
+**2.0 Team & Player Management Subsystem (`/v1/teams`, `/v1/players`)**
+- `POST /v1/teams` $\rightarrow$ Maps to **UC 2.1 Create New Team**
+- `DELETE /v1/teams/{team_id}` $\rightarrow$ Maps to **UC 2.2 Delete Team**
+- `GET /v1/players/available` $\rightarrow$ Fetches unassigned players with $\ge 6$ check for **UC 2.1**
+
+**3.0 League & Matches Engine Subsystem (`/v1/leagues`, `/v1/matches`)**
+- `POST /v1/leagues` $\rightarrow$ Maps to **UC 3.1 Create New League**
+- `GET /v1/leagues/{league_id}/leaderboard` $\rightarrow$ Real-time standings fetch
+- `POST /v1/matches/friendly` $\rightarrow$ Initiates unofficial match simulation
+
+**4.0 Bots & Behaviors Engine Subsystem (`/v1/behaviors`)**
+- `POST /v1/behaviors` $\rightarrow$ Maps to **UC 4.1 Create Behavior**
+- `PUT /v1/behaviors/{behavior_id}` $\rightarrow$ Maps to **UC 4.2 Modify Behavior**
+- `DELETE /v1/behaviors/{behavior_id}` $\rightarrow$ Maps to **UC 4.3 Delete Behavior**
+
+### Application Programming Interfaces (APIs)
+
+### 1.0 User & Profile Management Subsystem
+#### 1.1 Sign Up
+- **Associated use case:** 1.1 Sign up (Create New User)
+-  **HTTP Method:** `POST`
+- **Endpoint:** `/v1/auth/signup`
+- **Headers:** 
+	 - `api.futbot.com`
+	 - Content-Type: `application/json`
+	 - Accept: `application/json`
+- **Request Body (JSON)**
+```json
+{
+  "username": "user_name",
+  "email": "user@example.com",
+  "password": "12345678",
+  "name": "Juan Perez",
+  "avatar": "https://cdn.futbot.com/avatars/default_1.png"
+}
+```
+
+- **Expected Api Responses**
+**Success Response** (`201 Created`)
+```json
+{
+  "status": "success",
+  "message": "Account created successfully.",
+  "data": {
+    "user_id": "1234",
+    "username": "user_name",
+    "email": "user@example.com",
+    "name": "Juan Perez",
+    "avatar": "https://cdn.futbot.com/avatars/default_1.png",
+    "created_at": "2026-09-01T10:15:00Z"
+  }
+}
+```
+**Error Response - Email Duplicate** `(409 Conflict)`
+*Maps to Exception 1*
+```json 
+{
+  "status": "error",
+  "code": "EMAIL_ALREADY_IN_USE",
+  "message": "The email provided is already registered to another user",
+}
+```
+
+
+
+
+
+# Draft (ignorar)
+### 1. API REST (Comportamientos y Gestión)
+
+#### 1.1 Modificar Comportamiento (Script Python)
+* **Caso de Uso Asociado:** [CU-08] Modify Behavior
+* **Método HTTP:** `PUT`
+* **Endpoint:** `/api/v1/behaviors/{behavior_id}`
+* **Headers:** 
+  * `Authorization`: `Bearer <jwt_token>`
+  * `Content-Type`: `application/json`
+* **Request Body:**
+```json
+{
+  "behavior_name": "Ataque Agresivo V2",
+  "python_script": "def decide_action(player, ball):\n    if player.has_ball():\n        return 'SHOOT'\n    return 'MOVE_TO_BALL'"
+}
+Respuestas:200 OK: Comportamiento actualizado.JSON{ "behavior_id": "bh_05", "updated_at": "2026-09-01T12:00:00Z" }
+400 Bad Request: Error de sintaxis en Python.JSON{ "error": "SYNTAX_ERROR", "details": "Line 3: IndentationError" }
+409 Conflict: Comportamiento asignado a jugadores activos.JSON{ "error": "BEHAVIOR_IN_USE", "message": "No se puede modificar, está en uso." }
+1.2 Aceptar / Rechazar Partido AmistosoCasos de Uso Asociados: [CU-21] Aceptar Amistoso / [CU-22] Rechazar AmistosoMétodo HTTP: PUTEndpoint: /api/v1/matches/friendly/{invite_id}/respondRequest Body:JSON{
+  "action": "ACCEPT" // O "REJECT"
+}
+Respuestas:200 OK: Invitación procesada correctamente.400 Bad Request: Jugadores no disponibles o partido en curso.2. API WebSocket (Eventos en Tiempo Real)URL de Conexión: wss://api.tudominio.com/ws/v1/realtime?token={jwt_token}2.1 Evento: Invitación a Amistoso RecibidaOrigen/Destino: Servidor -> Cliente (Rival)Nombre de Evento: friendly_invite_receivedDescripción: Se emite en tiempo real cuando un usuario reta a otro a un partido amistoso.Payload:JSON{
+  "event": "friendly_invite_received",
+  "data": {
+    "invite_id": "inv_9982",
+    "challenger": {
+      "id": "usr_10",
+      "username": "carlos_pro",
+      "team_name": "Titanes FC"
+    }
+  }
+}
+2.2 Evento: Transmisión del Partido Amistoso (3v3 Live)Origen/Destino: Servidor -> Cliente (Ambos Jugadores)Nombre de Evento: match_frame_tickDescripción: Envía las coordenadas del balón y posiciones de los 6 jugadores en cada frame de la simulación.Payload:JSON{
+  "event": "match_frame_tick",
+  "match_id": "match_771",
+  "tick": 1240,
+  "data": {
+    "ball": { "x": 12.5, "y": 4.0 },
+    "players": [
+      { "id": "ply_01", "x": 10.1, "y": 3.8, "action": "RUNNING" },
+      { "id": "ply_02", "x": 25.0, "y": 12.2, "action": "IDLE" }
+    ]
+  }
+}
