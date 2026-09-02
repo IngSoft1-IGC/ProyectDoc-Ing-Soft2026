@@ -14,8 +14,8 @@ classDiagram
     class Equipo {
         +int id
         +String nombre
-        +List JugadoresTitulares
-        +List JugadoresSuplentes
+        +List~Jugador~ JugadoresTitulares
+        +List~Jugador~ JugadoresSuplentes
 
         +crearEquipo()
         +unirseALiga()
@@ -39,10 +39,10 @@ classDiagram
 
     class Comportamiento {
         +int id
-        +string etiqueta
+        +string nombre
         +String codigoPython
-        +crearcomportamiento()
 
+        +crearcomportamiento()
         +validarSintaxis()
         +validarSeguridad()
         +eliminarComportamiento()
@@ -59,7 +59,7 @@ classDiagram
 
         +crearLiga()
         +iniciarLiga()
-        +eliminarLiga() ????
+        +cancelarLiga()
     }
 
     class TablaPosiciones {
@@ -75,8 +75,6 @@ classDiagram
     class Partido {
         +int id
         +bool estado 
-        +string EquipoVisitante     ???
-        +string EquipoLocal     ???
 
         +iniciarPartido()
         +procesarSustitucion()
@@ -84,19 +82,19 @@ classDiagram
     }
 
     Usuario "1" -- "1" Equipo : posee
-
     Usuario "1" --> "*" Comportamiento : crea
+    Usuario "*" --> "1" Partido: Observa
+    Usuario "1" --> "*" Jugador: crea
 
-    Equipo "1" *-- "6" Jugador : conforma
+    Equipo "1" o-- "6" Jugador : conforma
 
     Jugador "*" --> "1" Comportamiento : ejecuta
 
-    Liga "1" *-- "*" Equipo : inscribe
-
+    Liga "1" o-- "*" Equipo : inscribe
     Liga "1" *-- "1" TablaPosiciones : gestiona
-
     Liga "1" *-- "*" Partido : programa
 
     Partido "*" --> "2" Equipo : disputan
 
+    
 ```
