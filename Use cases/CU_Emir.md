@@ -112,7 +112,7 @@ graph TD
     P -->|Invalidar Registro de Sesión| D
     P -->|Pantalla de Login| U
 ```
-### Caso de uso #11: Eliminar liga
+### Caso de uso #11: Cancelar liga
 
 **Descripción:** Permite al usuario la oportunidad de cancelar una liga no empezada.
 
@@ -120,27 +120,24 @@ graph TD
 | :--- | :--- |
 | **Actor Primario** | Usuario (Propietario de la liga) |
 | **Actor Secundario** | Sistema |
-| **Precondición** | El Usuario debe estar autenticado (logueado), debe ser el propietario de la liga a borrar y la liga no debe haber empezado. |
+| **Precondición** | El Usuario debe estar autenticado (logueado), debe ser el propietario de la liga a cancelar y la liga no debe haber empezado. |
 | **Poscondición** | La liga es eliminada del sistema y los equipos inscritos son notificados de la cancelación. |
 
 #### Escenario Exitoso
-1. El Usuario elige la liga a borrar.
-2. El Usuario hace clic en 'Eliminar liga'.
-3. El Sistema solicita una confirmación al Usuario para proceder.
-4. El Usuario confirma la eliminación.
-5. El Sistema elimina la liga de la base de datos.
-6. El Sistema manda una notificación a los equipos que se habían inscrito.
-7. El Sistema muestra un mensaje de éxito y redirige a la pantalla principal.
+1. El Usuario hace clic en 'Cancelar liga'.
+2. El Sistema solicita una confirmación al Usuario para proceder.
+3. El Usuario confirma la cancelacion.
+4. El Sistema cancela la liga de la base de datos.
+5. El Sistema manda una notificación a los equipos que se habían inscrito.
+6. El Sistema muestra un mensaje de éxito y redirige a la pantalla principal.
 
 #### Escenarios Excepcionales / Alternativos
-
-* **4a. El Usuario cancela la eliminación de la liga:**
+* **3a. El Usuario decide no confirmar la cancelación:**
     1. El Sistema cancela la operación sin hacer cambios en la base de datos.
-    2. El Sistema redirecciona a la pantalla anterior (o mantiene la vista actual).
-
-* **5a. El Sistema no puede eliminar la liga (Fallo técnico):**
+    2. El Sistema redirecciona a la pantalla anterior.
+* **4a. El Sistema no puede eliminar la liga (Fallo técnico):**
     1. El Sistema detecta un fallo al intentar procesar la baja en la base de datos.
-    2. El Sistema muestra un mensaje de error indicando que no se pudo eliminar la liga en este momento.
+    2. El Sistema muestra un mensaje de error indicando que no se pudo cancelar la liga en este momento.
     3. La liga permanece registrada en el sistema y no se envían notificaciones a los equipos.
 
 #### DFD
@@ -148,7 +145,7 @@ graph TD
 graph TD
     U[Usuario / Propietario]
     E[Equipos Inscritos]
-    P((11.0 Eliminar Liga))
+    P((11.0 Cancelar Liga))
     D[(DB: Ligas)]
     U -->|Solicitud / ID_Liga + Confirmación| P
     P -->|Mensaje de Éxito / Error| U
