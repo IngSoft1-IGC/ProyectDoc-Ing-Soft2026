@@ -2,9 +2,10 @@
 classDiagram
     class Usuario {
         +int id
-        +String email
-        +String password_ruido
-        +String avatar
+        +string nickname
+        +string email
+        +string password_ruido
+        +string avatar
 
         +registrarse()
         +iniciarSesion()
@@ -14,13 +15,22 @@ classDiagram
     class Equipo {
         +int id
         +String nombre
-        +List~Jugador~ JugadoresTitulares
-        +List~Jugador~ JugadoresSuplentes
+        +List~(Jugador,Comportamiento)~ JugadoresTitulares
+        +List~(Jugador,Comportamiento)~ JugadoresSuplentes
+        
 
         +crearEquipo()
         +unirseALiga()
         +editarEquipo()
         +eliminarEquipo()
+    }
+    
+    class Historial{
+        +int ligasGanadas
+        +int puntosTotales
+        +int partidosGanados
+        +int partidosPerdidos
+        +int partidosEmpatadas
     }
 
     class Jugador {
@@ -34,7 +44,6 @@ classDiagram
         +int strength
 
         +validarPACSS()
-        +eliminarJugador()
     }
 
     class Comportamiento {
@@ -45,6 +54,7 @@ classDiagram
         +crearcomportamiento()
         +validarSintaxis()
         +validarSeguridad()
+        +editarComportamiento()
         +eliminarComportamiento()
     }
 
@@ -52,10 +62,12 @@ classDiagram
         +int id
         +String nombre
         +bool esPrivada
-        +String contrasena
+        +String contraseña
         +int minEquipos
         +int maxEquipos
         +int duracionPartido
+        +int fechaInicio
+        +List~Equipos~ inscritos
 
         +crearLiga()
         +iniciarLiga()
@@ -63,22 +75,37 @@ classDiagram
     }
 
     class TablaPosiciones {
-        +int puntos
-        +int golesFavor
-        +int golesContra
-        +int diferenciaGoles
-        
+        +List~Equipos~ inscritos
+        +string orden
+
         +actualizar()
         +resetear()
+    }
+
+    class RankingGlobal {
+        +List~Usuario~ usuarios
+        +String orden
+
+        +actualizarRanking()
+
     }
 
     class Partido {
         +int id
         +bool estado 
+        +string resultado
 
         +iniciarPartido()
         +procesarSustitucion()
         +finalizarPartido()
+    }
+
+    class Resultado {
+        +int golesEquipo1
+        +int golesEquipo2
+
+        +quienGano()
+        +esEmpate()
     }
 
     Usuario "1" -- "1" Equipo : posee
@@ -87,7 +114,7 @@ classDiagram
     Usuario "1" --> "*" Jugador: crea
 
     Equipo "1" o-- "6" Jugador : conforma
-
+    Equipo --> Historial
     Jugador "*" --> "1" Comportamiento : ejecuta
 
     Liga "1" o-- "*" Equipo : inscribe
@@ -96,5 +123,8 @@ classDiagram
 
     Partido "*" --> "2" Equipo : disputan
 
+    Partido --> Resultado: tendra
+
+    Usuario --> RankingGlobal: compuesta
     
 ```
