@@ -80,7 +80,7 @@ A registered user logs into the system to access their dashboard and manage thei
 
 ---
 
-### 1.3 Use Case: Manage User Profile
+### 1.3 Use Case: Edit User Profile
 
 **Actor:** User (Logged In)
 
@@ -98,356 +98,429 @@ A user views and updates their profile information including name, email, avatar
 5. New Password (Optional update)
 
 **Successful Flow:**
-1. User clicks on their profile avatar in the navigation bar
-2. System displays the Profile page with current Name, Username, Email, and Avatar
-3. User updates desired fields and clicks "Save Changes"
-4. System validates input formats, verifies new email uniqueness (if changed), and confirms old password matches (if password update requested)
-5. System updates account details in the database
-6. System displays success message and reloads the updated Profile page
-
-**Alternative Scenarios:**
-- **Alternative 1 - View Without Changes:**
-  - Trigger: User navigates away or clicks "Cancel" (Step 3)
-  - Flow: System discards unsaved changes and redirects to Main Menu without modifying database
+1. User accesses the profile management section
+2. System displays current user information
+3. User modifies desired fields
+4. System validates input formats
+5. System updates database with new information
+6. System confirms changes to the user
 
 **Exceptional Scenarios:**
-- **Exception 1 - Empty or Invalid Fields:**
-  - Trigger: Input validation fails (Step 4)
-  - Flow: System highlights invalid fields (e.g., malformed email) and prompts user to correct them
+- **Exception 1 - Invalid Email Format:**
+  - Trigger: Email format validation fails (Step 4)
+  - Flow: System displays error indicating invalid email format
 
-- **Exception 2 - Email Already in Use:**
-  - Trigger: Email uniqueness validation fails (Step 4)
-  - Flow: System displays error indicating email is already registered to another account
-
-- **Exception 3 - Incorrect Old Password:**
-  - Trigger: Password validation fails (Step 4)
-  - Flow: System highlights error and prompts user to correct the password and try again
+- **Exception 2 - Password Mismatch:**
+  - Trigger: Old password does not match stored password (Step 4)
+  - Flow: System displays error indicating incorrect old password
 
 **Post-conditions:**
-1. User's updated profile information is saved in the database
-2. UI reflects updated account information
+1. Updated user profile is saved in the database
+2. User sees updated information after successful save
 
 ---
 
-## 2.0 Team Management
+## 2.0 Player Management
 
-### 2.1 Use Case: Create New Team
+### 2.1 Use Case: Create Player
 
 **Actor:** User (Logged In)
 
 **Brief Description:**
-A user creates a new team using their previously created players to prepare for matches.
+A user creates a new player with customizable PACSS attributes.
 
 **Preconditions:**
-1. User is logged in
-2. User has at least 6 available players created in their account
+- User is logged in
+- User has access to player creation interface
+
+**Inputs:**
+1. Player name
+2. PACSS attributes (Power, Speed, Dexterity, Control, Strength)
+3. Team assignment (optional at creation)
+
+**Successful Flow:**
+1. User accesses player creation interface
+2. System displays form for player creation
+3. User enters player name and PACSS values
+4. System validates that exactly 10 points are allocated across all attributes
+5. System validates minimum value of 1 point per attribute
+6. System creates player record in database
+7. System assigns player to team if specified
+8. System displays confirmation message
+
+**Exceptional Scenarios:**
+- **Exception 1 - Invalid PACSS Allocation:**
+  - Trigger: Total points not equal to 10 (Step 4)
+  - Flow: System displays error indicating incorrect point allocation
+
+- **Exception 2 - Attribute Below Minimum:**
+  - Trigger: Any attribute below 1 point (Step 5)
+  - Flow: System displays error indicating minimum point requirement
+
+**Post-conditions:**
+1. New player record is created in database
+2. Player is available for team assignment
+3. Player can be assigned to a team or used in behaviors
+
+---
+
+### 2.2 Use Case: Update Player
+
+**Actor:** User (Logged In)
+
+**Brief Description:**
+A user modifies existing player information including PACSS attributes.
+
+**Preconditions:**
+- User is logged in
+- Player exists in the database
+- Player has not been assigned to an active match
+
+**Inputs:**
+1. Player name (optional)
+2. Updated PACSS attributes
+3. Team assignment (optional)
+
+**Successful Flow:**
+1. User accesses player management interface
+2. System displays current player information
+3. User modifies desired fields
+4. System validates PACSS allocation rules
+5. System updates database with new information
+6. System confirms changes to the user
+
+**Exceptional Scenarios:**
+- **Exception 1 - Invalid PACSS Allocation:**
+  - Trigger: Total points not equal to 10 (Step 4)
+  - Flow: System displays error indicating incorrect point allocation
+
+**Post-conditions:**
+1. Updated player record is saved in the database
+2. Player can be used with updated attributes
+
+---
+
+## 3.0 Team Management
+
+### 3.1 Use Case: Create Team
+
+**Actor:** User (Logged In)
+
+**Brief Description:**
+A user creates a new team for organizing players and participating in leagues.
+
+**Preconditions:**
+- User is logged in
+- User has access to team creation interface
 
 **Inputs:**
 1. Team name
-2. 3 Main players (Center, Upper Defendant, Lower Defendant)
-3. 3 Replacement players
+2. Player assignments (minimum 6 players required)
+3. Team captain selection
 
 **Successful Flow:**
-1. User clicks "Create New Team" button
-2. System displays Team Creation form with fields for Team name and dropdown menus for main and replacement players
-3. User fills out form and clicks "Submit"
-4. System validates inputs and verifies that selected players are not assigned to another team
-5. System creates the team and adds entry to the database
-6. System displays confirmation message and returns to previous page
+1. User accesses team creation interface
+2. System displays form for team creation
+3. User enters team name and selects players
+4. System validates minimum of 6 players requirement
+5. System creates team record in database
+6. System assigns players to the team
+7. System displays confirmation message
 
 **Exceptional Scenarios:**
-- **Exception 1 - Missing or Invalid Fields:**
-  - Trigger: Input validation fails (Step 4)
-  - Flow: System highlights missing or invalid fields with error messages and prompts user to correct them
+- **Exception 1 - Insufficient Players:**
+  - Trigger: Less than 6 players selected (Step 4)
+  - Flow: System displays error indicating minimum player requirement
 
 - **Exception 2 - Player Already Assigned:**
-  - Trigger: Player verification fails (Step 4)
-  - Flow: System displays error listing players already in teams and prompts user to use different players
+  - Trigger: Attempt to assign player already in another team (Step 4)
+  - Flow: System displays error indicating player is already assigned
 
 **Post-conditions:**
-1. New team is registered in the database with user as owner
-2. Selected players are marked as assigned to the new team
-3. Team is ready to play matches
+1. New team record is created in database
+2. Team is available for league participation
+3. Players are assigned to the team
 
 ---
 
-### 2.2 Use Case: Delete Team
+### 3.2 Use Case: Manage Team Players
 
 **Actor:** User (Logged In)
 
 **Brief Description:**
-A user removes an existing team from the system.
+A user adds or removes players from an existing team.
 
 **Preconditions:**
-1. User is authenticated
-2. At least one team exists in the system
-3. Team is not currently participating in an active league
+- User is logged in
+- Team exists in database
+- User owns the team
+
+**Inputs:**
+1. Player to add/remove
+2. Action type (add or remove)
 
 **Successful Flow:**
-1. User selects the team to delete from the list
-2. User clicks "Delete Team" button
-3. System requests confirmation for the action
-4. User confirms the action
-5. System deletes the team from the database
-6. System displays success message
+1. User accesses team management interface
+2. System displays current team players
+3. User selects player and action
+4. System validates action (add/remove)
+5. System updates team-player relationships
+6. System confirms changes
 
 **Exceptional Scenarios:**
-- **Exception 1 - User Cancels Confirmation:**
-  - Trigger: User clicks cancel at Step 3
-  - Flow: System cancels operation without modifying data and returns to team list
+- **Exception 1 - Adding Player Already in Team:**
+  - Trigger: Attempt to add player already assigned to this team (Step 4)
+  - Flow: System displays error indicating player is already on team
 
-- **Exception 2 - Database Deletion Failure:**
-  - Trigger: System fails to delete record (Step 5)
-  - Flow: System detects failure, displays error message, and team remains in system
+- **Exception 2 - Removing Player from Team:**
+  - Trigger: Attempt to remove player not assigned to team (Step 4)
+  - Flow: System displays error indicating player is not on team
 
 **Post-conditions:**
-1. Team is removed from the database
-2. Players previously assigned to team are now available for other teams
-3. Team no longer appears in user's team list
+1. Team-player relationships are updated in database
+2. Team composition is reflected in system
 
 ---
 
-## 3.0 League and Matches Engine
+## 4.0 League Management
 
-### 3.1 Use Case: Create New League
+### 4.1 Use Case: Create League
 
 **Actor:** User (Logged In)
 
 **Brief Description:**
-A user creates a new league for teams to compete against each other in a structured tournament format.
+A user creates a new league with specific parameters for team competition.
 
 **Preconditions:**
-1. User is logged in
-2. User is on the main menu
-3. User has at least one team with minimum 6 players (3 Main + 3 Replacement)
-4. User's teams are not currently playing in another league
+- User is logged in
+- User has access to league creation interface
+- Minimum 3 teams available for league creation
 
 **Inputs:**
 1. League name
-2. Match duration
-3. Match start date/time
-4. Minimum number of teams
-5. Maximum number of teams
-6. Password (optional)
-7. User's participating team(s)
+2. League type (public/private)
+3. Password (for private leagues)
+4. Duration parameters
+5. Team limits
+6. Competition rules
 
 **Successful Flow:**
-1. User clicks "Create New League" button
-2. System displays league creation form requiring League name, Match duration, Minimum/Maximum teams, optional Password, and participating team(s)
-3. User fills required fields and clicks Submit
-4. System validates inputs and verifies:
-   - Minimum participating teams is at least 3
-   - Maximum participating teams is within system constraints
-   - Match duration is ≤ 5 minutes (or equivalent in ticks)
-   - Match starting date is greater than 1 minute from current time
-   - User's teams are not participating in another league
-   - All participating teams have minimum 6 players
-5. System creates the league and initializes leaderboard
-6. System displays confirmation message and redirects to newly created league page
+1. User accesses league creation interface
+2. System displays form for league creation
+3. User enters league details
+4. System validates minimum team requirement
+5. System creates league record in database
+6. System assigns teams to league
+7. System displays confirmation message
 
 **Exceptional Scenarios:**
-- **Exception 1 - Missing or Invalid Fields:**
-  - Trigger: Input verification fails (Step 4)
-  - Flow: System highlights missing or invalid fields with error messages and prompts user to correct them
+- **Exception 1 - Insufficient Teams:**
+  - Trigger: Less than 3 teams provided (Step 4)
+  - Flow: System displays error indicating minimum team requirement
 
-- **Exception 2 - Team Already in Another League:**
-  - Trigger: Team participation validation fails (Step 4)
-  - Flow: System displays error listing teams already in other leagues and prompts user to use different teams
-
-- **Exception 3 - Insufficient Team Members:**
-  - Trigger: Player count validation fails (Step 4)
-  - Flow: System displays error indicating which teams don't have minimum required players
+- **Exception 2 - Invalid League Name:**
+  - Trigger: Empty or duplicate league name (Step 3)
+  - Flow: System displays error indicating invalid name
 
 **Post-conditions:**
-1. New league is created and registered in database
-2. League leaderboard is initialized with participating teams
-3. League is ready to accept match results
-4. All participating teams are marked as unavailable for other leagues
+1. New league record is created in database
+2. League is ready for match scheduling
+3. Teams are assigned to the league
 
-**League Structure:**
-- Each league has a local leaderboard tracking per team:
-  - Team name
-  - Owner (User who created the team)
-  - Wins
-  - Losses
-  - Total Goals
-- All teams within a league must play matches against each other
-- Leagues may be open (public) or private (password-protected)
-- To join a league, each team must have minimum of 6 players
-- Users may play friendly matches outside of league structure at any time
+---
+### 4.2 Use Case: Join League
+### Todo...
 
 ---
 
-### 3.2 Match Duration and Constraints
-
-**Match Parameters:**
-- Match duration: ≤ 5 minutes (or equivalent in ticks as configured by system)
-- Minimum start time offset: > 1 minute from current time
-- Teams must complete all fixtures within the league
-- Friendly matches can be played outside of league structure at any time
-
----
-
-## 4.0 Bots and Behaviors Engine
-
-### 4.1 Use Case: Create Behavior
+### 4.3 Use Case: Schedule Matches
 
 **Actor:** User (Logged In)
 
 **Brief Description:**
-A user creates a Python script defining how a player behaves and makes decisions during match execution.
+A user schedules matches between teams within a league.
 
 **Preconditions:**
-1. User is logged in
-2. User is on the Behaviors management screen
+- User is logged in
+- League exists in database
+- Teams are assigned to league
+- Match scheduling interface is accessible
+
+**Inputs:**
+1. Match date and time
+2. Home team
+3. Away team
+4. Match duration
+5. Location (optional)
+
+**Successful Flow:**
+1. User accesses match scheduling interface
+2. System displays available teams in league
+3. User selects teams for match
+4. System validates match parameters
+5. System schedules match in database
+6. System displays confirmation message
+
+**Exceptional Scenarios:**
+- **Exception 1 - Teams Not in Same League:**
+  - Trigger: Selected teams not both in the same league (Step 3)
+  - Flow: System displays error indicating teams must be in same league
+
+- **Exception 2 - Overlapping Schedule:**
+  - Trigger: Scheduled match conflicts with existing match (Step 4)
+  - Flow: System displays error indicating schedule conflict
+
+**Post-conditions:**
+1. Match is scheduled in database
+2. Match appears in league calendar
+3. Teams are notified of upcoming match
+
+---
+### 4.4 Use Case: Leave League
+### Todo...
+
+---
+
+## 5.0 Behavior Management
+
+### 5.1 Use Case: Create Behavior
+
+**Actor:** User (Logged In)
+
+**Brief Description:**
+A user creates a new behavior script for player AI actions during matches.
+
+**Preconditions:**
+- User is logged in
+- User has access to behavior creation interface
+- Valid Python syntax knowledge required
 
 **Inputs:**
 1. Behavior name
-2. Python script (.py file or inline code)
+2. Python script content
+3. Description of behavior purpose
 
 **Successful Flow:**
-1. User clicks "Create New Behavior" button
-2. System displays behavior creation form with input for behavior name and code editor/file upload
-3. User enters behavior name and Python code and clicks Submit
-4. System validates that fields are not empty and verifies Python syntax
+1. User accesses behavior creation interface
+2. System displays form for behavior creation
+3. User enters behavior details and script
+4. System validates Python syntax
 5. System saves behavior to database
-6. System displays confirmation and redirects to Behaviors screen
+6. System displays confirmation message
 
 **Exceptional Scenarios:**
-- **Exception 1 - Missing Code or File:**
-  - Trigger: Field validation fails (Step 4)
-  - Flow: System displays error and prompts user to upload file or write Python script
+- **Exception 1 - Invalid Python Syntax:**
+  - Trigger: Script fails Python syntax validation (Step 4)
+  - Flow: System displays syntax error and prompts user to correct
 
-- **Exception 2 - Code Syntax Errors:**
-  - Trigger: Syntax check fails (Step 4)
-  - Flow: System displays error with specific syntax error details and prompts user to correct
+- **Exception 2 - Security Violation:**
+  - Trigger: Script contains restricted operations (Step 4)
+  - Flow: System displays security error and rejects script
 
 **Post-conditions:**
-1. Behavior is stored in database with unique identifier
-2. Behavior is available for assignment to players
+1. New behavior record is created in database
+2. Behavior is available for player assignment
+3. Behavior can be executed in sandboxed environment
 
 ---
 
-### 4.2 Use Case: Modify Behavior
+### 5.2 Use Case: Assign Behavior to Player
 
 **Actor:** User (Logged In)
 
 **Brief Description:**
-A user updates an existing player behavior script to alter or fix how a player operates in-game.
+A user assigns a behavior script to a specific player for match execution.
 
 **Preconditions:**
-1. User is logged in
-2. User has selected a specific existing behavior to modify from the Behaviors screen
-3. Behavior is not currently assigned to any active players
+- User is logged in
+- Behavior exists in database
+- Player exists in database
+- Player is not currently in an active match
 
 **Inputs:**
-1. Behavior name (optional update)
-2. Python script or .py file describing the new behavior
+1. Player selection
+2. Behavior selection
+3. Assignment confirmation
 
 **Successful Flow:**
-1. User clicks "Modify Behavior" button for a selected behavior
-2. System displays modification form populated with current behavior name and Python code
-3. User edits code (or uploads new .py file) and clicks "Save Changes"
-4. System validates that fields are not empty, checks that script is not currently assigned to active players, and verifies Python syntax
-5. System displays confirmation prompt: "Are you sure you want to modify this behavior? This action cannot be undone."
-6. User clicks "I Understand"
-7. System updates behavior entry in database
-8. System displays success notification and redirects to Behaviors screen
-
-**Alternative Scenarios:**
-- **Alternative 1 - User Rejects Changes:**
-  - Trigger: User clicks "Cancel" at Step 3 or 6
-  - Flow: System discards unsaved changes and redirects to Behaviors screen without modifying database
+1. User accesses behavior assignment interface
+2. System displays available players and behaviors
+3. User selects player and behavior
+4. System validates assignment compatibility
+5. System assigns behavior to player
+6. System displays confirmation message
 
 **Exceptional Scenarios:**
-- **Exception 1 - Missing Code:**
-  - Trigger: Field validation fails (Step 4)
-  - Flow: System displays error and prompts user to upload file or write script
-
-- **Exception 2 - Code Syntax Errors:**
-  - Trigger: Syntax check fails (Step 4)
-  - Flow: System displays error with specific syntax error and prompts user to correct
-
-- **Exception 3 - Behavior Assigned to Active Players:**
-  - Trigger: Dependency check fails (Step 4)
-  - Flow: System displays error listing players using this behavior and prompts user to unassign them first
+- **Exception 1 - Player in Active Match:**
+  - Trigger: Attempt to assign behavior to player in active match (Step 4)
+  - Flow: System displays error indicating player cannot be modified during match
 
 **Post-conditions:**
-1. Behavior record is updated with new Python code
-2. Updated behavior logic applies to any subsequent matches
-3. All players using this behavior will execute the new logic
+1. Behavior is assigned to player
+2. Player will execute this behavior during matches
+3. Assignment is recorded in database
+---
+### 5.3 Use Case: Delete Behavior
+### Todo...
 
 ---
 
-### 4.3 Use Case: Delete Behavior
+## 6.0 Match Execution
 
-**Actor:** User (Logged In)
+### 6.1 Use Case: Execute Match
+
+**Actor:** System
 
 **Brief Description:**
-A user removes an existing behavior from the system.
+The system executes a scheduled match with AI-driven player behaviors.
 
 **Preconditions:**
-1. User is authenticated
-2. At least one behavior exists in the system
-3. Behavior is not currently assigned to any active players
+- Match is scheduled and active
+- Teams have players assigned
+- Players have behaviors assigned
+- System has access to WebSocket for real-time updates
+
+**Inputs:**
+1. Match start time
+2. Team compositions
+3. Player behaviors
+4. Match parameters
 
 **Successful Flow:**
-1. User selects the behavior to delete from the list
-2. User clicks "Delete Behavior" button
-3. System requests confirmation for the action
-4. User confirms the action
-5. System deletes the behavior from the database
-6. System displays success message
+1. System identifies scheduled match
+2. System initializes match environment
+3. System loads player behaviors
+4. System starts match simulation
+5. System executes match quarters with real-time updates
+6. System updates match results in database
+7. System sends final results via WebSocket
 
 **Exceptional Scenarios:**
-- **Exception 1 - User Cancels Confirmation:**
-  - Trigger: User clicks cancel at Step 3
-  - Flow: System cancels operation without modifying data and returns to behaviors list
+- **Exception 1 - Missing Player Behaviors:**
+  - Trigger: Player without assigned behavior (Step 3)
+  - Flow: System assigns default behavior or displays error
 
-- **Exception 2 - Database Deletion Failure:**
-  - Trigger: System fails to delete record (Step 5)
-  - Flow: System detects failure, displays error message, and behavior remains in system
-
-- **Exception 3 - Behavior in Use by Active Players:**
-  - Trigger: Behavior is linked to active players (Step 5)
-  - Flow: System detects linkage, displays error with list of affected players, and behavior remains in system
+- **Exception 2 - Match Execution Failure:**
+  - Trigger: System error during simulation (Step 4)
+  - Flow: System logs error and stops match execution
 
 **Post-conditions:**
-1. Behavior is removed from database
-2. Behavior is no longer available for assignment
-3. Players that had this behavior assigned remain unchanged (can be manually updated separately)
+1. Match results are stored in database
+2. League standings are updated
+3. Spectators receive final results via WebSocket
+
+---
+### 6.2 Use Case: Spectate Match
+### Todo...
 
 ---
 
-## Summary of Functional Areas
+### 6.3 Use Case: Switch Player
 
-| Process | Use Cases | Primary Responsibility |
-|---------|-----------|------------------------|
-| **1.0 User/Profile Management** | Sign Up, Login, Manage Profile | User registration, authentication, profile maintenance |
-| **2.0 Team Management** | Create Team, Delete Team | Team organization and player assignment |
-| **3.0 League and Matches** | Create League | League administration and match scheduling |
-| **4.0 Bots and Behaviors** | Create Behavior, Modify Behavior, Delete Behavior | AI behavior scripting and management |
+### Todo...
 
 ---
 
-## Non-Functional Requirements (Preliminary)
+### 6.4 Use Case: Switch Player Behavior
 
-**Performance:**
-- System should respond to user actions within 2 seconds
-- Database queries should complete within 5 seconds
-- League leaderboards should update in real-time as matches complete
-
-**Security:**
-- All passwords must be encrypted using industry-standard algorithms
-- User sessions should timeout after 30 minutes of inactivity
-- Email validation must prevent duplicate accounts
-
-**Data Integrity:**
-- System must maintain consistency across all four databases (User DB, Teams DB, Matches DB, Bots DB)
-- No team can be deleted while participating in an active league
-- No behavior can be modified while assigned to active players
-
-**Usability:**
-- All forms must provide clear error messages indicating what fields are invalid
-- All confirmation prompts must be explicit and require intentional user action
-- System should provide feedback for all operations (creation, update, deletion)
+### Todo...
