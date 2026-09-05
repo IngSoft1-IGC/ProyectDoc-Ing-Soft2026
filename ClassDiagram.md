@@ -1,11 +1,12 @@
+
 ```mermaid
 classDiagram
     class Usuario {
         +int id
-        +string nickname
-        +string email
-        +string password_ruido
-        +string avatar
+        +String nickname
+        +String email
+        +String password_ruido
+        +String avatar
 
         +registrarse()
         +iniciarSesion()
@@ -15,10 +16,9 @@ classDiagram
     class Equipo {
         +int id
         +String nombre
-        +List~(Jugador,Comportamiento)~ JugadoresTitulares
-        +List~(Jugador,Comportamiento)~ JugadoresSuplentes
+        +List~Jugador~ jugadoresTitulares
+        +List~Jugador~ jugadoresSuplentes
         
-
         +crearEquipo()
         +unirseALiga()
         +editarEquipo()
@@ -31,18 +31,22 @@ classDiagram
         +int partidosGanados
         +int partidosPerdidos
         +int partidosEmpatadas
+        +List~Partido~ partidos
     }
 
     class Jugador {
         +int id
         +int dorsal
         +String nombre
+        +Comportamiento compJugador
         +int power
         +int agility
         +int control
         +int speed
         +int strength
 
+		+actualizarJugador()
+		+borrarJugador()
         +validarPACSS()
     }
 
@@ -75,8 +79,8 @@ classDiagram
     }
 
     class TablaPosiciones {
-        +List~Equipos~ inscritos
-        +string orden
+        +List~Equipos~ inscriptos
+        +String orden
 
         +actualizar()
         +resetear()
@@ -92,8 +96,8 @@ classDiagram
 
     class Partido {
         +int id
-        +bool estado 
-        +string resultado
+        +bool enCurso 
+        +Resultado resultadoPart
 
         +iniciarPartido()
         +procesarSustitucion()

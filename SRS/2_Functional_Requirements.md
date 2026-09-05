@@ -328,6 +328,7 @@ A user creates a new league with specific parameters for team competition.
 3. Teams are assigned to the league
 
 ---
+
 ### 4.2 Use Case: Join League
 ### Todo...
 
@@ -376,6 +377,7 @@ A user schedules matches between teams within a league.
 3. Teams are notified of upcoming match
 
 ---
+
 ### 4.4 Use Case: Leave League
 ### Todo...
 
@@ -459,7 +461,9 @@ A user assigns a behavior script to a specific player for match execution.
 1. Behavior is assigned to player
 2. Player will execute this behavior during matches
 3. Assignment is recorded in database
+
 ---
+
 ### 5.3 Use Case: Delete Behavior
 ### Todo...
 
@@ -524,3 +528,4 @@ The system executes a scheduled match with AI-driven player behaviors.
 ### 6.4 Use Case: Switch Player Behavior
 
 ### Todo...
+
